@@ -1,6 +1,7 @@
 // ignore: file_names
 import 'dart:async';
 
+import 'package:firebaseproject/main.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -65,6 +66,11 @@ class _EmailFormState extends State<EmailForm> {
 
   @override
   Widget build(BuildContext context) {
+    MediaQueryData queryData;
+    queryData = MediaQuery.of(context);
+    queryData.devicePixelRatio;
+    double screenWidth = queryData.size.width;
+    double screenHeight = queryData.size.height;
     String? validateEmail(String? value) {
       const pattern = r"(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'"
           r'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-'
@@ -96,7 +102,7 @@ class _EmailFormState extends State<EmailForm> {
             "Enter Email",
             textAlign: TextAlign.right,
             style: GoogleFonts.poppins(
-              fontSize: 20,
+              fontSize: screenWidth*0.06,
               fontWeight: FontWeight.w700,
             ),
           ),
@@ -107,7 +113,7 @@ class _EmailFormState extends State<EmailForm> {
             "Fill your email address below",
             textAlign: TextAlign.right,
             style: GoogleFonts.poppins(
-              fontSize: 14,
+              fontSize: screenWidth*0.037,
               fontWeight: FontWeight.w400,
               color: Colors.black45,
             ),
@@ -165,18 +171,23 @@ class _EmailFormState extends State<EmailForm> {
         const SizedBox(
           height: 30,
         ),
-        ElevatedButton(
-          onPressed: () {
+        CButton(colour: Colors.black,
+        onPress: () {
             _submit();
             final isValidate = formkey.currentState!.validate();
             if (isValidate) {
+              MediaQueryData queryData;
+              queryData = MediaQuery.of(context);
+              queryData.devicePixelRatio;
+              double screenWidth = queryData.size.width;
+              double screenHeight = queryData.size.height;
               showGeneralDialog(
                 barrierDismissible: true,
                 barrierLabel: "Email Signin",
                 context: context,
                 pageBuilder: (context, _, __) => Center(
                   child: Container(
-                    height: 620,
+                    height: screenHeight*0.65,
                     margin: const EdgeInsets.symmetric(horizontal: 16),
                     padding: const EdgeInsets.symmetric(
                         vertical: 32, horizontal: 24),
@@ -196,22 +207,10 @@ class _EmailFormState extends State<EmailForm> {
               );
             }
           },
-          style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.black,
-              minimumSize: const Size(double.infinity, 50),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10),
-              )),
-          child: Text(
-            "Send Email",
-            style: GoogleFonts.roboto(fontSize: 20),
-          ),
-        ),
-        const SizedBox(
-          height: 30,
-        ),
-      ],
-    ));
+          text: "Send Email"),
+        ],
+      )
+    );
   }
   // Future<void> _saveText() async {
   //   final textToSave = _textEditingController.text;

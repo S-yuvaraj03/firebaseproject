@@ -7,6 +7,7 @@ class FirstPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: Drawer(),
         title: Text('First Page'),
       ),
       body: Center(

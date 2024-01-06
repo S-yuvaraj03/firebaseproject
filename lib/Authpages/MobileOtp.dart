@@ -1,7 +1,7 @@
 // ignore_for_file: override_on_non_overriding_member
 import 'dart:async';
-
-import 'package:firebaseproject/Homepage.dart';
+import 'package:firebaseproject/Pages/Homepage.dart';
+import 'package:firebaseproject/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:firebaseproject/Splashscreen.dart';
@@ -42,6 +42,11 @@ class _MobileOtpFormState extends State<MobileOtpForm> {
 
 
   Widget build(BuildContext context) {
+    MediaQueryData queryData;
+    queryData = MediaQuery.of(context);
+    queryData.devicePixelRatio;
+    double screenWidth = queryData.size.width;
+    double screenHeight = queryData.size.height;
     return Form(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -59,7 +64,7 @@ class _MobileOtpFormState extends State<MobileOtpForm> {
               "Verification code",
               textAlign: TextAlign.right,
               style: GoogleFonts.poppins(
-                fontSize: 20,
+                fontSize: screenWidth*0.06,
                 fontWeight: FontWeight.w700,
               ),
             ),
@@ -67,10 +72,10 @@ class _MobileOtpFormState extends State<MobileOtpForm> {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Text(
-              "we have sent you the verification code",
-              textAlign: TextAlign.right,
+              "we have sent you the verification code through SMS, only valid for 5 mins",
+              textAlign: TextAlign.justify,
               style: GoogleFonts.poppins(
-                fontSize: 14,
+                fontSize: screenWidth*0.035,
                 fontWeight: FontWeight.w400,
                 color: Colors.black45,
               ),
@@ -79,8 +84,8 @@ class _MobileOtpFormState extends State<MobileOtpForm> {
           Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
             for (int i = 0; i < 4;i++)
               SizedBox(
-                height: 68,
-                width: 64,
+                height: screenHeight*0.07,
+                width: screenWidth*0.15,
                 child: TextFormField(
                   onChanged: (value) {
                     if (value.length == 1) {
@@ -93,7 +98,7 @@ class _MobileOtpFormState extends State<MobileOtpForm> {
                           borderSide:
                               BorderSide(width: 3, color: Colors.black87)),
                       hintText: "0"),
-                  style: Theme.of(context).textTheme.headlineMedium,
+                  style: Theme.of(context).textTheme.titleLarge,
                   keyboardType: TextInputType.number,
                   textAlign: TextAlign.center,
                   inputFormatters: [
@@ -106,13 +111,13 @@ class _MobileOtpFormState extends State<MobileOtpForm> {
           ),
           Row(
             children: [
-              const Text(
+              Text(
                 "+91******8999",
-                style: TextStyle(fontSize: 16),
+                style: TextStyle(fontSize: screenWidth*0.035),
               ),
               TextButton(
                 style: TextButton.styleFrom(
-                  textStyle: const TextStyle(fontSize: 13),
+                  //textStyle: const TextStyle(fontSize: 13),
                 ),
                 onPressed: () {
                   Navigator.push(
@@ -123,59 +128,42 @@ class _MobileOtpFormState extends State<MobileOtpForm> {
                 child: Text(
                   "Change Phone number ?",
                   style: GoogleFonts.sofiaSans(
-                    textStyle: const TextStyle(color: Colors.indigo,fontSize: 16),
+                    textStyle: TextStyle(color: Colors.indigo,fontSize: screenWidth*0.035),
                   ),
                 ),
               )
             ],
           ),
-          SizedBox(height: 40,
-          child:
-            Center(
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Text('Time Left: $secondsRemaining seconds'),
-              ),
-            ),
-          ),
           Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              ElevatedButton(
-                onPressed: () {
+              CButton(
+                colour: secondsRemaining > 0?Colors.black87:Colors.redAccent, 
+                onPress: () {
                 if (secondsRemaining > 0) {
                 Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => FirstPage()));
-                      } else {
-                        Null;
-                      }
-                    },
-                style: ElevatedButton.styleFrom(
-                  primary: secondsRemaining > 0?Colors.black87:Colors.red,
-                    minimumSize: const Size(double.infinity, 50),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
-                    )),
-                child: Text("Verify", style: GoogleFonts.roboto(fontSize: 20)),
-              ),
-              const SizedBox(height: 10),
-              ElevatedButton(
-                onPressed: () {},
-                style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.indigo,
-                    minimumSize: const Size(double.infinity, 50),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
-                    )),
-                child: Text(
-                  "Resend code",
-                  style: GoogleFonts.roboto(fontSize: 20),
+                context,
+                MaterialPageRoute(
+                    builder: (context) => const Homepage()));
+                } else {
+                  Null;
+                }
+              },
+            text: "Verify",
+          ),
+              SizedBox(
+                height: 30,child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text('Time Left: $secondsRemaining seconds'),
                 ),
               ),
+              CButton(
+              colour: secondsRemaining == 0?Colors.black87:Colors.indigo[300],
+              onPress: () {},
+              text: "Resend code"
+              )
             ],
-          )
+          ),
         ],
       ),
     );

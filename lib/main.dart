@@ -1,6 +1,7 @@
 import 'package:firebaseproject/Splashscreen.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'firebase_options.dart';
 
 void main() async {
@@ -20,25 +21,6 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Frontend',
-      // theme: ThemeData(
-      //   // This is the theme of your application.
-      //   //
-      //   // TRY THIS: Try running your application with "flutter run". You'll see
-      //   // the application has a blue toolbar. Then, without quitting the app,
-      //   // try changing the seedColor in the colorScheme below to Colors.green
-      //   // and then invoke "hot reload" (save your changes or press the "hot
-      //   // reload" button in a Flutter-supported IDE, or press "r" if you used
-      //   // the command line to start the app).
-      //   //
-      //   // Notice that the counter didn't reset back to zero; the application
-      //   // state is not lost during the reload. To reset the state, use hot
-      //   // restart instead.
-      //   //
-      //   // This works for code too, not just values: Most code changes can be
-      //   // tested with just a hot reload.
-      //   colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-      //   useMaterial3: true,
-      // ),
       initialRoute: '/splash',
       routes: {
         '/splash': (context) => const SplashScreen(),
@@ -46,3 +28,58 @@ class MyApp extends StatelessWidget {
     );
   }
 }
+
+const CtextField = InputDecoration(
+  hintText: 'hintText',
+  contentPadding: EdgeInsets.symmetric(
+    vertical: 10.0,
+    horizontal: 20.0,
+  ),
+  border: OutlineInputBorder(
+    borderRadius: BorderRadius.all(Radius.circular(5.0)),
+  ),
+  focusedBorder: OutlineInputBorder(
+    borderSide: BorderSide(),
+    borderRadius: BorderRadius.all(
+      Radius.circular(30.0),
+    )
+  )
+);
+
+class CButton extends StatelessWidget {
+  
+  CButton({@required this.colour, @required this.onPress, @required this.text});
+  final colour;
+  final onPress;
+  final text;
+
+  @override
+  Widget build(BuildContext context) {
+    MediaQueryData queryData;
+    queryData = MediaQuery.of(context);
+    queryData.devicePixelRatio;
+    double screenWidth = queryData.size.width;
+    double screenHeight = queryData.size.height;
+    return Material(
+      color: colour,
+      borderRadius: BorderRadius.circular(10),
+      elevation: 5.0,
+      child: MaterialButton(
+        onPressed: onPress,
+        minWidth: double.infinity,
+        height: screenHeight*0.06,
+        child: Text(
+          text,
+          style: kOnpressTextStyle,
+        ),
+      ),
+    );
+  }
+}
+
+const kOnpressTextStyle = TextStyle(
+  fontSize: 18,
+  color: Colors.white,
+  fontWeight: FontWeight.w500,
+  letterSpacing: 1.0,
+);
